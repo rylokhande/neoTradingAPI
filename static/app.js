@@ -1006,7 +1006,7 @@ function renderPositions(el) {
 }
 
 function exitPosition(p) {
-  openOrder(p, p.quantity > 0 ? 'SELL' : 'BUY', { units: Math.abs(p.quantity), product: p.product, orderType: 'MARKET' });
+  openOrder(p, p.quantity > 0 ? 'SELL' : 'BUY', { units: Math.abs(p.quantity), product: p.product, orderType: 'LIMIT' });
 }
 
 /* -------------------------------------------------------------- holdings */
@@ -2585,7 +2585,7 @@ async function openOrder(partial, side, opts = {}) {
   const qtyVal = units == null ? (deriv ? 1 : 1) : (deriv ? (qtyInLots(inst) ? units : Math.max(1, Math.round(units / lot))) : units);
   const products = deriv ? [['MIS', 'Intraday'], ['NRML', 'Overnight']] : [['MIS', 'Intraday'], ['CNC', 'Longterm'], ['MTF', 'MTF']];
   const product = (modify ? o.product : opts.product) || store.get(deriv ? 'lastProductDeriv' : 'lastProduct', deriv ? 'NRML' : 'CNC');
-  const orderType = (modify ? o.order_type : opts.orderType) || 'MARKET';
+  const orderType = (modify ? o.order_type : opts.orderType) || 'LIMIT';
   const ltp = S.quotes[inst.key]?.last_price;
   const tick = inst.tick_size || 0.05;
   const rawPrice = modify ? o.price : (opts.price ?? ltp);
